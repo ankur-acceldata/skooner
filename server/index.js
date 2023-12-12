@@ -13,6 +13,7 @@ const getCrypto = () =>
         require('crypto').webcrypto;
 
 const crypto = getCrypto();
+const fs = require('fs');
 
 const NODE_ENV = process.env.NODE_ENV;
 const DEBUG_VERBOSE = !!process.env.DEBUG_VERBOSE;
@@ -23,6 +24,19 @@ const OIDC_SCOPES = process.env.OIDC_SCOPES || 'openid email';
 const OIDC_USE_PKCE = process.env.OIDC_USE_PKCE === "true" || false;
 const OIDC_METADATA = JSON.parse(process.env.OIDC_METADATA || '{}');
 const clientMetadata = Object.assign({client_id: OIDC_CLIENT_ID, client_secret: OIDC_SECRET}, OIDC_METADATA);
+
+
+const tokenPath = '/var/run/secrets/kubernetes.io/serviceaccount/token';
+let BEARER_TOKEN = null;
+fs.readFile(tokenPath, 'utf8', (err, token) => {
+    if (err) {
+        console.error('Error reading the token:', err);
+        return;
+    }
+    BEARER_TOKEN = token;
+    console.log('Service Account Token:', token);
+});
+
 
 /*
     Code copied from https://stackoverflow.com/questions/63309409/creating-a-code-verifier-and-challenge-for-pkce-auth-on-spotify-api-in-reactjs
@@ -92,6 +106,8 @@ const proxySettings = {
     changeOrigin: true,
     logLevel: 'debug',
     onError,
+    onProxyReq,
+    onProxyReqWs
 };
 
 if (DEBUG_VERBOSE) {
@@ -102,6 +118,12 @@ const app = express();
 app.disable('x-powered-by'); // for security reasons, best not to tell attackers too much about our backend
 app.use(logging);
 if (NODE_ENV !== 'production') app.use(cors());
+
+app.use((req, res, next) => {
+    req.url = req.url.replace(/\/+/g, '/');
+    next();
+});
+
 app.use('/', preAuth, express.static('public'));
 app.get('/oidc', getOidc);
 app.post('/oidc', postOidc);
@@ -152,6 +174,16 @@ async function postOidc(req, res, next) {
 
 function onError(err, req, res) {
     console.log('Error in proxied request', err, req.method, req.url);
+}
+
+function onProxyReqWs(proxyReq)  {
+    console.log('Adding the ath header manually !!!! -==================');
+    proxyReq.setHeader('Authorization', `Bearer ${BEARER_TOKEN}`);
+}
+
+function onProxyReq(proxyReq)  {
+    console.log('Adding the ath header manually !!!! -==================');
+    proxyReq.setHeader('Authorization', `Bearer ${BEARER_TOKEN}`);
 }
 
 const SENSITIVE_HEADER_KEYS = ['authorization'];

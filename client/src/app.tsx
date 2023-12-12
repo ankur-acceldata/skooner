@@ -6,7 +6,7 @@ import Footer from './components/footer';
 import {initRouter} from './router';
 import log from './utils/log';
 import Button from './components/button';
-import LogoSvg from './art/skoonerSvg';
+import LogoSvg from './art/acceldataSvg';
 import HamburgerSvg from './art/hamburgerSvg';
 
 type State = {

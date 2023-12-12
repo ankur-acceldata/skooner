@@ -1,14 +1,14 @@
 # Stage 1 - the build react app
-FROM node:16.20.2-alpine as build-deps
+FROM --platform=linux/amd64  node:16.20.2-alpine as build-deps
 WORKDIR /usr/src/app
 COPY client/package.json client/package-lock.json ./
-RUN npm i
+RUN npm i --legacy-peer-deps
 
 COPY client/ ./
 RUN npm run build
 
 # Stage 2 - the production environment
-FROM node:16.20.2-alpine
+FROM --platform=linux/amd64  node:16.20.2-alpine
 
 RUN apk add --no-cache tini
 ENV NODE_ENV production
