@@ -26,7 +26,7 @@ const OIDC_METADATA = JSON.parse(process.env.OIDC_METADATA || '{}');
 const clientMetadata = Object.assign({client_id: OIDC_CLIENT_ID, client_secret: OIDC_SECRET}, OIDC_METADATA);
 
 
-const tokenPath = '/var/run/secrets/kubernetes.io/serviceaccount/token';
+const tokenPath = process.env.ACCESS_TOKEN_PATH || '/var/run/secrets/kubernetes.io/serviceaccount/token';
 let BEARER_TOKEN = null;
 fs.readFile(tokenPath, 'utf8', (err, token) => {
     if (err) {
