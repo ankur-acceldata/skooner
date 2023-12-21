@@ -241,7 +241,7 @@ async function oidcAuthenticate(code, redirectUri) {
         }
     }
     const tokenSet = await provider.callback(redirectUri, {code}, authCheckParams);
-    return tokenSet.id_token;
+    return tokenSet.access_token;
 }
 
 async function getOidcProvider() {
