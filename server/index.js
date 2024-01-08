@@ -178,7 +178,10 @@ function onError(err, req, res) {
 
 function onProxyReqWs(proxyReq)  {
     console.log('Adding the ath header manually !!!! -==================');
-    proxyReq.setHeader('Authorization', `Bearer ${BEARER_TOKEN}`);
+    const bufferData = Buffer.from(BEARER_TOKEN, 'utf-8');
+    const base64EncodedString = bufferData.toString('base64').replace(/=/g, '');
+    const wsToken = "base64url.bearer.authorization.k8s.io."+base64EncodedString+", base64.binary.k8s.io";
+    proxyReq.setHeader('Sec-WebSocket-Protocol', wsToken);
 }
 
 function onProxyReq(proxyReq)  {
