@@ -26,6 +26,7 @@ const OIDC_METADATA = JSON.parse(process.env.OIDC_METADATA || '{}');
 const clientMetadata = Object.assign({client_id: OIDC_CLIENT_ID, client_secret: OIDC_SECRET}, OIDC_METADATA);
 const tokenPath = process.env.ACCESS_TOKEN_PATH || '/var/run/secrets/kubernetes.io/serviceaccount/token';
 const HIDE_NAMESPACES_MENU = process.env.HIDE_NAMESPACES_MENU || false;
+const ALLOWED_NAMESPACES = process.env.ALLOWED_NAMESPACES || '';
 
 let BEARER_TOKEN = null;
 fs.readFile(tokenPath, 'utf8', (err, token) => {
@@ -127,12 +128,29 @@ app.use((req, res, next) => {
 app.use('/', preAuth, express.static('public'));
 app.get('/oidc', getOidc);
 app.post('/oidc', postOidc);
+
+/**
+ * Create an api to get hidden menu items from the server.
+ * This is controlled by the environment variable HIDE_NAMESPACES_MENU.
+ */
 app.get('/hiddenMenuItems', (req, res) => {
-    if (!!HIDE_NAMESPACES_MENU_FLAG) {
+    if (!!HIDE_NAMESPACES_MENU) {
         return res.json(['namespaces']);
     }
 
     return res.json([]);
+});
+
+/**
+ * This is a hack to get the namespaces from the cluster.
+ * This is needed to control the namespaces that are shown in the namespace dropdown through environment variables.
+ */
+app.get('/allowed-namespaces', (req, res) => {
+    if (ALLOWED_NAMESPACES.trim() === '' || !ALLOWED_NAMESPACES) {
+        return res.json([]);
+    }
+    const allowedNamespaces = ALLOWED_NAMESPACES.split(',');
+    return res.json(allowedNamespaces);
 });
 
 app.use('/*', createProxyMiddleware(proxySettings));

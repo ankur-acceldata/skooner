@@ -11,6 +11,7 @@ interface NamespaceFilterProps {
 interface NamespaceFilterStates {
     namespace: {};
     namespaces?: TODO[];
+    allowedNamespaces?: TODO[];
 }
 
 export default class NamespaceFilter extends Base<NamespaceFilterProps, NamespaceFilterStates> {
@@ -34,10 +35,21 @@ export default class NamespaceFilter extends Base<NamespaceFilterProps, Namespac
         this.onChange(namespace);
     }
 
-    render() {
-        const {namespace = '', namespaces = []} = this.state;
+    async getAllowedNamespaces() {
+        const response = await api.getAllowedNamespaces();
+        this.setState({allowedNamespaces: response || []});
+    }
 
-        const options = namespaces.map(x => ({value: x.metadata.name, label: x.metadata.name}));
+    componentDidMount() {
+        this.getAllowedNamespaces();
+    }
+
+
+    render() {
+        const {namespace = '', namespaces = [], allowedNamespaces = []} = this.state;
+
+        const options = allowedNamespaces.length > 0 ? allowedNamespaces.map(x => ({value: x, label: x}))
+            : namespaces.map(x => ({value: x.metadata.name, label: x.metadata.name}));
         options.unshift({value: '', label: 'All Namespaces'});
 
         const value = options.find(x => x.value === namespace);

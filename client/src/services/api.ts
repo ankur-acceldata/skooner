@@ -71,6 +71,7 @@ const apis = {
     roleBinding,
     hpa,
     getHiddenMenuItems,
+    getAllowedNamespaces,
 };
 
 async function testAuth() {
@@ -84,6 +85,10 @@ function getRules(namespace: string) {
 
 function getHiddenMenuItems() {
     return request('/hiddenMenuItems');
+}
+
+function getAllowedNamespaces() {
+    return request('/allowed-namespaces');
 }
 
 async function apply(body: TODO): Promise<TODO> {
