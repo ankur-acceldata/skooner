@@ -17,6 +17,7 @@ interface MenuProps {
 interface MenuStates {
     rules: TODO[];
     showAdd: boolean;
+    hiddenMenuItems: string[];
 }
 
 interface MenuItemProps {
@@ -30,7 +31,7 @@ interface MenuItemProps {
 export default class Menu extends Base<MenuProps, MenuStates> {
     componentDidMount() {
         this.getRules();
-
+        this.getHiddenMenuItems();
         this.registerApi({
             status: addHandler(() => this.getRules()),
         });
@@ -41,9 +42,15 @@ export default class Menu extends Base<MenuProps, MenuStates> {
         this.setState({rules: status.resourceRules});
     }
 
+    async getHiddenMenuItems() {
+        const response = await api.getHiddenMenuItems();
+        // @ts-ignore
+        this.setState({hiddenMenuItems: response});
+    }
+
     render() {
         const {onClick, toggled} = this.props;
-        const {showAdd, rules} = this.state || {};
+        const {showAdd, rules, hiddenMenuItems} = this.state || {};
 
         return (
             <>
@@ -59,7 +66,7 @@ export default class Menu extends Base<MenuProps, MenuStates> {
                             <MenuItem title='Nodes' path='node' resource='Node' onClick={onClick} />
                         )}
 
-                        {canView(rules, api.namespace) && (
+                        {canView(rules, api.namespace) && isHidden(hiddenMenuItems, 'namespaces') && (
                             <MenuItem title='Namespaces' path='namespace' resource='Namespace' onClick={onClick} />
                         )}
                     </Group>
@@ -155,6 +162,10 @@ function canView(resourcesRules: TODO[], ...args: TODO) {
     if (!resourcesRules) return false;
 
     return args.some((x: TODO) => canViewResource(resourcesRules, x.resource));
+}
+
+function isHidden(hiddenItems: string[], path: string) {
+    return hiddenItems.includes(path);
 }
 
 function canViewResource(resourcesRules: TODO[], {group, resource}: {group: TODO, resource: string}) {

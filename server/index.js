@@ -24,9 +24,10 @@ const OIDC_SCOPES = process.env.OIDC_SCOPES || 'openid email';
 const OIDC_USE_PKCE = process.env.OIDC_USE_PKCE === "true" || false;
 const OIDC_METADATA = JSON.parse(process.env.OIDC_METADATA || '{}');
 const clientMetadata = Object.assign({client_id: OIDC_CLIENT_ID, client_secret: OIDC_SECRET}, OIDC_METADATA);
-
-
 const tokenPath = process.env.ACCESS_TOKEN_PATH || '/var/run/secrets/kubernetes.io/serviceaccount/token';
+const HIDE_NAMESPACES_MENU_FLAG = process.env.HIDE_NAMESPACES_MENU || false;
+
+
 let BEARER_TOKEN = null;
 fs.readFile(tokenPath, 'utf8', (err, token) => {
     if (err) {
@@ -127,6 +128,14 @@ app.use((req, res, next) => {
 app.use('/', preAuth, express.static('public'));
 app.get('/oidc', getOidc);
 app.post('/oidc', postOidc);
+app.get('/hiddenMenuItems', (req, res) => {
+    if (!!HIDE_NAMESPACES_MENU_FLAG) {
+        return res.json(['namespaces']);
+    }
+
+    return res.json([]);
+});
+
 app.use('/*', createProxyMiddleware(proxySettings));
 app.use(handleErrors);
 
@@ -182,6 +191,7 @@ function onProxyReqWs(proxyReq)  {
     const base64EncodedString = bufferData.toString('base64').replace(/=/g, '');
     const wsToken = "base64url.bearer.authorization.k8s.io."+base64EncodedString+", base64.binary.k8s.io";
     proxyReq.setHeader('Sec-WebSocket-Protocol', wsToken);
+    proxyReq.setHeader('Authorization', `Bearer ${BEARER_TOKEN}`);
 }
 
 function onProxyReq(proxyReq)  {

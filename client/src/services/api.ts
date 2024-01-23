@@ -70,6 +70,7 @@ const apis = {
     statefulSet,
     roleBinding,
     hpa,
+    getHiddenMenuItems,
 };
 
 async function testAuth() {
@@ -79,6 +80,10 @@ async function testAuth() {
 
 function getRules(namespace: string) {
     return post('/apis/authorization.k8s.io/v1/selfsubjectrulesreviews', {spec: {namespace}});
+}
+
+function getHiddenMenuItems() {
+    return request('/hiddenMenuItems');
 }
 
 async function apply(body: TODO): Promise<TODO> {
