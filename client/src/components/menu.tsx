@@ -45,7 +45,7 @@ export default class Menu extends Base<MenuProps, MenuStates> {
     async getHiddenMenuItems() {
         const response = await api.getHiddenMenuItems();
         // @ts-ignore
-        this.setState({hiddenMenuItems: response});
+        this.setState({hiddenMenuItems: response || []});
     }
 
     render() {
@@ -165,7 +165,7 @@ function canView(resourcesRules: TODO[], ...args: TODO) {
 }
 
 function isHidden(hiddenItems: string[], path: string) {
-    return hiddenItems.includes(path);
+    return !hiddenItems.includes(path);
 }
 
 function canViewResource(resourcesRules: TODO[], {group, resource}: {group: TODO, resource: string}) {

@@ -25,8 +25,7 @@ const OIDC_USE_PKCE = process.env.OIDC_USE_PKCE === "true" || false;
 const OIDC_METADATA = JSON.parse(process.env.OIDC_METADATA || '{}');
 const clientMetadata = Object.assign({client_id: OIDC_CLIENT_ID, client_secret: OIDC_SECRET}, OIDC_METADATA);
 const tokenPath = process.env.ACCESS_TOKEN_PATH || '/var/run/secrets/kubernetes.io/serviceaccount/token';
-const HIDE_NAMESPACES_MENU_FLAG = process.env.HIDE_NAMESPACES_MENU || false;
-
+const HIDE_NAMESPACES_MENU = process.env.HIDE_NAMESPACES_MENU || false;
 
 let BEARER_TOKEN = null;
 fs.readFile(tokenPath, 'utf8', (err, token) => {
