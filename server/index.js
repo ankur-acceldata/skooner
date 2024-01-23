@@ -191,7 +191,7 @@ function onProxyReqWs(proxyReq)  {
     const base64EncodedString = bufferData.toString('base64').replace(/=/g, '');
     const wsToken = "base64url.bearer.authorization.k8s.io."+base64EncodedString+", base64.binary.k8s.io";
     proxyReq.setHeader('Sec-WebSocket-Protocol', wsToken);
-    proxyReq.setHeader('Authorization', `Bearer ${BEARER_TOKEN}`);
+    // proxyReq.setHeader('Authorization', `Bearer ${BEARER_TOKEN}`);
 }
 
 function onProxyReq(proxyReq)  {
