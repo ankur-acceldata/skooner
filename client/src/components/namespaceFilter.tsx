@@ -23,10 +23,6 @@ export default class NamespaceFilter extends Base<NamespaceFilterProps, Namespac
         this.state = {namespace};
         this.onChange = onChange;
         onChange(namespace);
-
-        this.registerApi({
-            namespaces: api.namespace.list((namespaces: TODO[]) => this.setState({namespaces})),
-        });
     }
 
     async setNamespace(namespace: string) {
@@ -38,19 +34,25 @@ export default class NamespaceFilter extends Base<NamespaceFilterProps, Namespac
     async getAllowedNamespaces() {
         const response = await api.getAllowedNamespaces();
         this.setState({allowedNamespaces: response || []});
+        // eslint-disable-next-line prefer-destructuring
+        localStorage.namespace = response[0];
+        this.setState({namespace: response[0]});
     }
 
     componentDidMount() {
-        this.getAllowedNamespaces();
+        this.getAllowedNamespaces().then(() => {
+            this.registerApi({
+                namespaces: api.namespace.list((namespaces: TODO[]) => this.setState({namespaces})),
+            });
+        });
     }
-
 
     render() {
         const {namespace = '', namespaces = [], allowedNamespaces = []} = this.state;
 
         const options = allowedNamespaces.length > 0 ? allowedNamespaces.map(x => ({value: x, label: x}))
             : namespaces.map(x => ({value: x.metadata.name, label: x.metadata.name}));
-        options.unshift({value: '', label: 'All Namespaces'});
+        // options.unshift({value: '', label: 'All Namespaces'});
 
         const value = options.find(x => x.value === namespace);
 
