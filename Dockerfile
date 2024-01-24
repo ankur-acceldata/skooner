@@ -16,7 +16,7 @@ WORKDIR /usr/src/app
 RUN chown -R node:node /usr/src/app/
 EXPOSE 4654
 
-COPY server/package.json server/package-lock.json ./
+COPY server/package.json  ./
 RUN npm i --production
 
 COPY --from=build-deps /usr/src/app/build /usr/src/app/public

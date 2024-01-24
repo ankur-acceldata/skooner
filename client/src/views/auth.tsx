@@ -25,10 +25,11 @@ export default class Auth extends Base<{}, State> {
     async componentDidMount() {
         const url = new URL(window.location.href);
         const code = url.searchParams.get('code');
+        const iss = url.searchParams.get('iss') || 'na';;
         const state = url.searchParams.get('state');
 
-        if (code && state) {
-            this.oidcLogin(code, state);
+        if (code && state && iss) {
+            this.oidcLogin(code, state,iss);
             return;
         }
 
@@ -68,7 +69,7 @@ export default class Auth extends Base<{}, State> {
         );
     }
 
-    async oidcLogin(code: string, returnedState: string) {
+    async oidcLogin(code: string, returnedState: string, iss: string) {
         const {state, redirectUri} = JSON.parse(sessionStorage.oidc) || {};
         delete sessionStorage.oidc;
 
@@ -80,7 +81,7 @@ export default class Auth extends Base<{}, State> {
         }
 
         try {
-            const {token} = await api.oidc.post(code, redirectUri);
+            const {token} = await api.oidc.post(code, redirectUri,iss);
             login(token, state);
         } catch (err) {
             log.error('OIDC login failed', {err});

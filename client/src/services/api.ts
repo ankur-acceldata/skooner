@@ -129,7 +129,7 @@ function metricsFactory() {
 function oidcFactory() {
     return {
         get: () => request('/oidc'),
-        post: (code: string, redirectUri: string) => post('/oidc', {code, redirectUri}),
+        post: (code: string, redirectUri: string, iss: string) => post('/oidc', {code, redirectUri, iss}),
     };
 }
 
