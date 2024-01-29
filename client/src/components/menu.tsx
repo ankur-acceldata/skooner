@@ -165,7 +165,10 @@ function canView(resourcesRules: TODO[], ...args: TODO) {
 }
 
 function isHidden(hiddenItems: string[], path: string) {
-    return !hiddenItems.includes(path);
+    if (hiddenItems) {
+        return !hiddenItems.includes(path);
+    }
+    return true;
 }
 
 function canViewResource(resourcesRules: TODO[], {group, resource}: {group: TODO, resource: string}) {
