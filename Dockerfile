@@ -8,7 +8,7 @@ COPY client/ ./
 RUN npm run build
 
 # Stage 2 - the production environment
-FROM --platform=linux/amd64  node:16.20.2-alpine
+FROM --platform=linux/amd64  node:20.12.2-alpine3.19
 
 RUN apk add --no-cache tini
 ENV NODE_ENV production
