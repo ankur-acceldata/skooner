@@ -1,5 +1,5 @@
 # Stage 1 - the build react app
-FROM --platform=linux/amd64  node:node:20.12.2-alpine3.19 as build-deps
+FROM --platform=linux/amd64  node:20.12.2-alpine3.19 as build-deps
 WORKDIR /usr/src/app
 COPY client/package.json client/package-lock.json ./
 RUN npm i --legacy-peer-deps
