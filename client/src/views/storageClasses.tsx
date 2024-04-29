@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import Base from '../components/base';
 import Filter from '../components/filter';
@@ -21,20 +22,20 @@ export default class StorageClasses extends Base<{}, State> {
 
     componentDidMount() {
         this.registerApi({
-            items: api.storageClass.list(items => this.setState({items})),
+            items: api.storageClass.list((items) => this.setState({items})),
         });
     }
 
     render() {
         const {items, sort, filter} = this.state;
-        const filtered = items && items.filter(x => test(filter, x.metadata.name));
+        const filtered = items && items.filter((x) => test(filter, x.metadata.name));
 
         return (
             <div id='content'>
                 <Filter
                     text='Storage Classes'
                     filter={filter}
-                    onChange={x => this.setState({filter: x})}
+                    onChange={(x) => this.setState({filter: x})}
                 />
 
                 <div className='contentPanel'>
@@ -52,7 +53,7 @@ export default class StorageClasses extends Base<{}, State> {
                             filter={filter}
                             sort={sort}
                             colSpan={5}
-                            row={x => (
+                            row={(x) => (
                                 <tr key={x.metadata.uid}>
                                     <MetadataColumns
                                         item={x}

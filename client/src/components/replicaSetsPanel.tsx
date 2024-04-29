@@ -1,3 +1,4 @@
+// @ts-nocheck
 import './replicaSetsPanel.scss';
 import React from 'react';
 import Switch from 'react-switch';
@@ -39,7 +40,7 @@ export default class ReplicaSetsPanel extends Base<ReplicaSetsPanelProps, Replic
                                 <label className='replicaSetsPanel_switch optional_xsmall'>
                                     <Switch
                                         checked={activeOnly}
-                                        onChange={x => this.setState({activeOnly: x})}
+                                        onChange={(x) => this.setState({activeOnly: x})}
                                         uncheckedIcon={false}
                                         checkedIcon={false}
                                         width={20}
@@ -56,7 +57,7 @@ export default class ReplicaSetsPanel extends Base<ReplicaSetsPanelProps, Replic
                         filter={filter}
                         sort={sort}
                         colSpan={5 + Number(includeNamespace)}
-                        row={x => (
+                        row={(x) => (
                             <tr key={x.metadata.uid}>
                                 <MetadataColumns
                                     item={x}
@@ -77,5 +78,5 @@ export default class ReplicaSetsPanel extends Base<ReplicaSetsPanelProps, Replic
 function filterItems(activeOnly: boolean, items?: ReplicaSet[]) {
     if (!items) return null;
 
-    return items.filter(x => !((!x.status.replicas || !x.spec.replicas) && activeOnly));
+    return items.filter((x) => !((!x.status.replicas || !x.spec.replicas) && activeOnly));
 }

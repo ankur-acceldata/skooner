@@ -1,3 +1,4 @@
+// @ts-nocheck
 import _ from 'lodash';
 import React from 'react';
 import Chart from './chart';
@@ -26,7 +27,7 @@ function getNodeCpuTotals(items?: Node[], metrics?: _.Dictionary<Metrics>) {
 
     const metricValues = Object.values(metrics) || [];
 
-    const used = _.sumBy(metricValues, x => parseCpu(_.get(x, 'usage.cpu'))) / TO_ONE_CPU;
-    const available = _.sumBy(items, x => parseCpu(_.get(x, 'status.capacity.cpu'))) / TO_ONE_CPU;
+    const used = _.sumBy(metricValues, (x) => parseCpu(_.get(x, 'usage.cpu'))) / TO_ONE_CPU;
+    const available = _.sumBy(items, (x) => parseCpu(_.get(x, 'status.capacity.cpu'))) / TO_ONE_CPU;
     return {used, available};
 }

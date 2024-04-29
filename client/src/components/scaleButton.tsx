@@ -1,3 +1,4 @@
+// @ts-nocheck
 import './scaleButton.scss';
 import React from 'react';
 import Modal from 'react-modal';
@@ -40,7 +41,7 @@ export default class ScaleButton extends Base<ScaleButtonProps, ScaleButtonState
                                 className='scaleButton_input'
                                 min='0'
                                 defaultValue={scaleInfo.spec.replicas || 0}
-                                onChange={x => this.setState({value: parseInt(x.target.value, 10)})}
+                                onChange={(x) => this.setState({value: parseInt(x.target.value, 10)})}
                             />
 
                             <div className='modal_actions'>

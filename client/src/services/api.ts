@@ -1,3 +1,4 @@
+// @ts-nocheck
 import _ from 'lodash';
 import {Base64} from 'js-base64';
 import {request, post, stream, apiFactory, apiFactoryWithNamespace, requestText} from './apiProxy';

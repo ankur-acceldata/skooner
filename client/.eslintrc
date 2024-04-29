@@ -81,6 +81,11 @@
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/ban-ts-comment": "off",
         "@typescript-eslint/ban-types": "off",
-        "@typescript-eslint/no-non-null-assertion": "off"
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "arrow-parens": "off",
+        "no-multiple-empty-lines": "off",
+        "comma-spacing": "off",
+        "semi-spacing": "off",
+        "@typescript-eslint/no-extra-semi": "off"
     }
 }

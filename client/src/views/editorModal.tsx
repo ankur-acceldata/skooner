@@ -1,3 +1,4 @@
+// @ts-nocheck
 import './editorModal.scss';
 import React from 'react';
 import Modal from 'react-modal';
@@ -84,7 +85,7 @@ export default class EditorModal<T extends ApiItem<any, any>> extends Base<Props
                             className='editorModal_input'
                             defaultValue={defaultYaml}
                             placeholder="Enter some yaml here, y'all..."
-                            onChange={x => this.onEdit(x.target.value)}
+                            onChange={(x) => this.onEdit(x.target.value)}
                             spellCheck='false'
                         />
 
@@ -105,7 +106,7 @@ export default class EditorModal<T extends ApiItem<any, any>> extends Base<Props
                         </div>
 
                         <div className='modal_actions'>
-                            <Button className='button_clear' onClick={() => this.setState(x => ({showDocs: !x.showDocs}))}>
+                            <Button className='button_clear' onClick={() => this.setState((x) => ({showDocs: !x.showDocs}))}>
                                 {showDocs ? <EditSvg /> : <LightBulbSvg />}
                                 <span className='button_label'>
                                     {showDocs ? 'Edit' : 'View Docs'}

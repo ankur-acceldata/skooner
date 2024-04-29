@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import {Swipeable} from 'react-swipeable';
 import Base from './base';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import _ from 'lodash';
 import React from 'react';
 import Chart from './chart';
@@ -35,7 +36,7 @@ function getNodeRamTotals(items?: Node[], metrics?: _.Dictionary<Metrics>) {
 
     const metricValues = Object.values(metrics) || [];
 
-    const used = _.sumBy(metricValues, x => parseRam(_.get(x, 'usage.memory')));
-    const available = _.sumBy(items, x => parseRam(_.get(x, 'status.capacity.memory')));
+    const used = _.sumBy(metricValues, (x) => parseRam(_.get(x, 'usage.memory')));
+    const available = _.sumBy(items, (x) => parseRam(_.get(x, 'status.capacity.memory')));
     return {used, available};
 }

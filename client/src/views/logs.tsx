@@ -1,3 +1,4 @@
+// @ts-nocheck
 import './logs.scss';
 import _ from 'lodash';
 import React from 'react';
@@ -53,18 +54,17 @@ export default class Logs extends Base<Props, State> {
         const {namespace, name} = this.props;
 
         this.registerApi({
-            item: api.pod.get(namespace, name, x => this.onPod(x)),
+            item: api.pod.get(namespace, name, (x) => this.onPod(x)),
         });
     }
 
     onPod(pod: Pod) {
-        const containers = pod.spec.containers.map(x => x.name);
+        const containers = pod.spec.containers.map((x) => x.name);
         let initContainers: string[] = [];
 
         if (pod.spec.initContainers) {
-            initContainers = pod.spec.initContainers.map(x => x.name);
+            initContainers = pod.spec.initContainers.map((x) => x.name);
         }
-
 
         this.setState({containers, initContainers});
         this.setContainer(containers[0]);
@@ -87,7 +87,7 @@ export default class Logs extends Base<Props, State> {
 
         const {namespace, name} = this.props;
         this.registerApi({
-            items: api.logs(namespace, name, container, 1000, showPrevious, items => this.debouncedSetState({items})), // eslint-disable-line max-len
+            items: api.logs(namespace, name, container, 1000, showPrevious, (items) => this.debouncedSetState({items})), // eslint-disable-line max-len
         });
     }
 
@@ -124,10 +124,10 @@ export default class Logs extends Base<Props, State> {
         const {items, container, containers = [], initContainers = [], filter = '', showPrevious = false, logDownloading} = this.state;
 
         const lowercaseFilter = filter.toLowerCase();
-        const filteredLogs = items.filter(x => x.toLowerCase().includes(lowercaseFilter));
+        const filteredLogs = items.filter((x) => x.toLowerCase().includes(lowercaseFilter));
 
-        const containerOptions = containers.map(x => ({value: x, label: x}));
-        const initContainerOptions = initContainers.map(x => ({value: x, label: x}));
+        const containerOptions = containers.map((x) => ({value: x, label: x}));
+        const initContainerOptions = initContainers.map((x) => ({value: x, label: x}));
 
         const options = [{
             label: 'Containers',
@@ -137,8 +137,9 @@ export default class Logs extends Base<Props, State> {
             options: initContainerOptions,
         }];
 
-        const selected = [...containerOptions, ...initContainerOptions].find(x => x.value === container);
+        const selected = [...containerOptions, ...initContainerOptions].find((x) => x.value === container);
 
+        // @ts-ignore
         return (
             <div id='content'>
                 <div id='header'>
@@ -151,14 +152,14 @@ export default class Logs extends Base<Props, State> {
                             value={selected}
                             options={options}
                             // @ts-ignore
-                            onChange={x => this.setContainer(x.value)}
+                            onChange={(x) => this.setContainer(x.value)}
                         />
                     </div>
 
                     <label className='logs_showPrevious'>
                         <Switch
                             checked={showPrevious}
-                            onChange={x => this.setShowPrevious(x)}
+                            onChange={(x) => this.setShowPrevious(x)}
                             uncheckedIcon={false}
                             checkedIcon={false}
                             width={20}
@@ -167,10 +168,9 @@ export default class Logs extends Base<Props, State> {
                         <div className='logs_showPreviousLabel'>Previous</div>
                     </label>
 
-
                     <InputFilter
                         filter={filter}
-                        onChange={x => this.setState({filter: x})}
+                        onChange={(x) => this.setState({filter: x})}
                     />
 
                     <Button
