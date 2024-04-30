@@ -86,6 +86,10 @@
         "no-multiple-empty-lines": "off",
         "comma-spacing": "off",
         "semi-spacing": "off",
-        "@typescript-eslint/no-extra-semi": "off"
+        "@typescript-eslint/no-extra-semi": "off",
+        "no-param-reassign": "off",
+        "no-mixed-operators": "off",
+        "max-classes-per-file": "off",
+        "prefer-object-spread": "off"
     }
 }
