@@ -1,5 +1,6 @@
 const cors = require('cors');
 const express = require('express');
+const audit = require('express-requests-logger');
 const http = require('http');
 const https = require('https');
 const k8s = require('@kubernetes/client-node');
@@ -118,6 +119,7 @@ if (DEBUG_VERBOSE) {
 const app = express();
 app.disable('x-powered-by'); // for security reasons, best not to tell attackers too much about our backend
 app.use(logging);
+app.use(audit());
 if (NODE_ENV !== 'production') app.use(cors());
 
 app.use((req, res, next) => {
