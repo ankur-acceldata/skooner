@@ -95,7 +95,7 @@ const kc = new k8s.KubeConfig();
 kc.loadFromDefault();
 
 const opts = {};
-kc.applyToRequest(opts);
+kc.applyToFetchOptions(opts);
 
 const target = kc.getCurrentCluster().server;
 console.log('API URL: ', target);
@@ -292,12 +292,12 @@ async function logClusterInfo() {
     try {
         const versionClient = kc.makeApiClient(k8s.VersionApi);
         const versionResponse = await versionClient.getCode();
-        const versionJson = JSON.stringify(versionResponse.body, null, 4);
+        const versionJson = JSON.stringify(versionResponse, null, 4);
         console.log('Version Info: ', versionJson);
 
         const apisClient = kc.makeApiClient(k8s.ApisApi);
         const apisResponse = await apisClient.getAPIVersions();
-        const apis = apisResponse.body.groups.map(x => x.preferredVersion.groupVersion).sort();
+        const apis = apisResponse.groups.map(x => x.preferredVersion.groupVersion).sort();
         const apisJson = JSON.stringify(apis, null, 4);
         console.log('Available APIs: ', apisJson);
     } catch (err) {
