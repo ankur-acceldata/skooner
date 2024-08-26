@@ -214,7 +214,6 @@ function onProxyReqWs(proxyReq)  {
 }
 
 function onProxyReq(proxyReq)  {
-    console.log('Adding the ath header manually !!!! -==================');
     proxyReq.setHeader('Authorization', `Bearer ${BEARER_TOKEN}`);
 }
 
