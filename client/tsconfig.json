@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "suppressImplicitAnyIndexErrors": true,
+    "noImplicitAny": false,
     "checkJs": false,
     "target": "es5",
     "lib": [

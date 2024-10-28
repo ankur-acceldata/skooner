@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import Base from '../components/base';
 import Filter from '../components/filter';

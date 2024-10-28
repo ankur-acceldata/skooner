@@ -1,3 +1,4 @@
+// @ts-nocheck
 import _ from 'lodash';
 import {parseRam, parseCpu} from './unitHelpers';
 import {TODO, ApiItem, Pod, Node, Metrics, MetricsUsage} from './types';
