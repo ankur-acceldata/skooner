@@ -75,5 +75,8 @@
     "url": "^0.11.3",
     "util": "^0.12.5",
     "webpack": "^5.91.0"
+  },
+  "resolutions": {
+    "nth-check": "^2.0.1"
   }
 }
