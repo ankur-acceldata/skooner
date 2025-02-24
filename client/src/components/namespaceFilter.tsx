@@ -1,5 +1,5 @@
 import React from 'react';
-import Select, {ValueType} from 'react-select';
+import Select, {SingleValue, ActionMeta} from 'react-select/dist/react-select.cjs';
 import Base from './base';
 import api from '../services/api';
 import {TODO} from '../utils/types';
@@ -62,7 +62,11 @@ export default class NamespaceFilter extends Base<NamespaceFilterProps, Namespac
                     className="react-select"
                     classNamePrefix="react-select"
                     value={value}
-                    onChange={(x:ValueType<TODO>) => this.setNamespace(x.value)}
+                    onChange={(newValue: SingleValue<{value: string, label: string}>, actionMeta: ActionMeta<{value: string, label: string}>) => {
+                        if (newValue) {
+                            this.setNamespace(newValue.value);
+                        }
+                    }}
                     options={options}
                 />
             </div>

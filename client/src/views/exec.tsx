@@ -1,6 +1,6 @@
 import 'xterm/dist/xterm.css';
 import React from 'react';
-import Select from 'react-select';
+import Select, {SingleValue, ActionMeta} from 'react-select/dist/react-select.cjs';
 import {Terminal} from 'xterm';
 import Base from '../components/base';
 import api from '../services/api';
@@ -104,8 +104,12 @@ export default class Exec extends Base<Props, State> {
                             classNamePrefix="react-select"
                             value={selected}
                             options={options}
-                            // @ts-ignore
-                            onChange={x => this.setContainer(x.value)}
+                            onChange={(newValue: SingleValue<{value: string, label: string}>,
+                                actionMeta: ActionMeta<{value: string, label: string}>) => {
+                                if (newValue) {
+                                    this.setContainer(newValue.value);
+                                }
+                            }}
                         />
                     </div>
                 </div>
